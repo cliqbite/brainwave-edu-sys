@@ -1,0 +1,29 @@
+{
+  "name": "brainwave-edu-sys",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Brainwave Education System - WhatsApp Broadcast & User Management Platform",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev -w @brainwave/backend",
+    "dev:frontend": "npm run dev -w @brainwave/frontend",
+    "dev:worker": "npm run dev -w @brainwave/worker",
+    "build": "npm run build --workspaces --if-present",
+    "build:backend": "npm run build -w @brainwave/backend",
+    "build:frontend": "npm run build -w @brainwave/frontend",
+    "build:worker": "npm run build -w @brainwave/worker",
+    "db:generate": "npm run db:generate -w @brainwave/backend",
+    "db:migrate": "npm run db:migrate -w @brainwave/backend",
+    "db:migrate:prod": "npm run db:migrate:prod -w @brainwave/backend",
+    "db:seed": "npm run db:seed -w @brainwave/backend",
+    "db:studio": "npm run db:studio -w @brainwave/backend",
+    "lint": "npm run lint --workspaces --if-present",
+    "clean": "npm run clean --workspaces --if-present && rm -rf node_modules"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

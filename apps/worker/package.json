@@ -1,0 +1,30 @@
+{
+  "name": "@brainwave/worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "dotenv -e ../../.env.development -- tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@brainwave/shared": "*",
+    "@prisma/client": "^5.22.0",
+    "bullmq": "^5.30.0",
+    "ioredis": "^5.4.2",
+    "pino": "^9.6.0",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/web-push": "^3.6.4",
+    "dotenv-cli": "^11.0.0",
+    "pino-pretty": "^13.0.0",
+    "prisma": "^5.22.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
+  }
+}

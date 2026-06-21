@@ -1,0 +1,59 @@
+# ============================================================
+# Brainwave EduSys - Docker Compose (Development)
+# ============================================================
+
+services:
+  # ---- MySQL Database ----
+  mysql:
+    image: mysql:8.0
+    container_name: brainwave-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_secret}
+      MYSQL_DATABASE: ${DB_NAME:-brainwave_edusys}
+      MYSQL_USER: ${DB_USER:-brainwave}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-brainwave_secret_change_me}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./infra/docker/mysql/init.sh:/docker-entrypoint-initdb.d/init.sh
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - brainwave-net
+
+  # ---- Redis ----
+  redis:
+    image: redis:7-alpine
+    container_name: brainwave-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes ${REDIS_PASSWORD:+--requirepass ${REDIS_PASSWORD}}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - brainwave-net
+
+  # ---- Backend API (Development - Host Mode) ----
+  # In development, run backend on host with `npm run dev:backend`
+  # Use these services for MySQL and Redis only
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  brainwave-net:
+    driver: bridge

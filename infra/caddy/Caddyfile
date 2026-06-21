@@ -1,0 +1,51 @@
+# ============================================================
+# Brainwave EduSys - Caddy Reverse Proxy Configuration
+# Automatic HTTPS with Let's Encrypt / ZeroSSL
+# ============================================================
+
+# Frontend - app.example.com
+{$FRONTEND_DOMAIN} {
+	encode gzip zstd
+
+	# Security headers
+	header {
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		-Server
+	}
+
+	# PWA service worker cache headers
+	@serviceWorker path /sw.js
+	header @serviceWorker Cache-Control "no-cache, no-store, must-revalidate"
+
+	# Static asset caching (1 year for hashed assets)
+	@staticAssets path *.js *.css *.woff2 *.woff *.ttf *.png *.jpg *.svg *.ico
+	header @staticAssets Cache-Control "public, max-age=31536000, immutable"
+
+	reverse_proxy frontend:80
+}
+
+# Backend API - api.example.com
+{$API_DOMAIN} {
+	encode gzip zstd
+
+	# Security headers
+	header {
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		-Server
+	}
+
+	# Increase max body size for file uploads (10MB)
+	request_body {
+		max_size 10MB
+	}
+
+	reverse_proxy backend:4000
+}

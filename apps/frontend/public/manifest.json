@@ -1,0 +1,16 @@
+{
+  "name": "Brainwave EduSys",
+  "short_name": "EduSys",
+  "description": "School Management System",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e293b",
+  "theme_color": "#1e293b",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}
