@@ -31,7 +31,7 @@ docker compose up -d
 npm install
 
 # 5. Database setup
-npm run db:generate    # Generate Prisma client
+npm run db:generate    # Generate Prisma 7 client (reads apps/backend/prisma.config.ts)
 npm run db:migrate     # Run migrations
 npm run db:seed        # Seed roles, permissions, master user
 
@@ -126,9 +126,13 @@ docker compose -f docker-compose.prod.yml up -d --build
 # Wait for MySQL to be healthy
 docker compose -f docker-compose.prod.yml logs -f mysql
 
+# Run migrations (Prisma 7 reads DB URL from prisma.config.ts, loaded via env)
+docker compose -f docker-compose.prod.yml exec backend \
+  npx prisma migrate deploy
+
 # Seed database (first time only)
 docker compose -f docker-compose.prod.yml exec backend \
-  npx prisma db seed --schema=prisma/schema.prisma
+  npx prisma db seed
 
 # Verify all services
 docker compose -f docker-compose.prod.yml ps
@@ -191,7 +195,8 @@ Deploying to production involves multiple moving parts. If something goes wrong,
 **Solution:**
 - Run `docker compose -f docker-compose.prod.yml logs backend` to see the exact Prisma error.
 - Manually run migrations inside the container: `docker compose -f docker-compose.prod.yml exec backend npx prisma migrate deploy`
-- Ensure `DB_URL` uses the exact docker service name (`mysql`) and correct password.
+- Ensure `DATABASE_URL` is set — Prisma 7 CLI reads it via `apps/backend/prisma.config.ts`; the runtime uses `@prisma/adapter-mariadb` which also reads it directly.
+- `DATABASE_URL` must use the exact docker service name (`mysql`) as host, e.g. `mysql://user:pass@mysql:3306/dbname`.
 
 ### 2. Redis Connection Issues (Background Worker)
 **What goes wrong:** Broadcasts or background tasks are stuck in "PENDING" and the worker logs show `ECONNREFUSED`.

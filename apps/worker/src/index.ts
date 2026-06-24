@@ -7,6 +7,7 @@ import { Worker } from 'bullmq';
 import { Redis } from 'ioredis';
 import pino from 'pino';
 import { PrismaClient } from '@prisma/client';
+import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { processMessageCampaign } from './processors/message.processor.js';
 import { processPushNotification } from './processors/push.processor.js';
 
@@ -17,7 +18,8 @@ const logger = pino({
     : undefined,
 });
 
-const prisma = new PrismaClient();
+const adapter = new PrismaMariaDb(process.env['DATABASE_URL']!);
+const prisma = new PrismaClient({ adapter });
 
 const redisConnection = new Redis({
   host: process.env['REDIS_HOST'] ?? 'localhost',

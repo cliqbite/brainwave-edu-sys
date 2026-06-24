@@ -2,7 +2,7 @@
 
 All notable changes to the Brainwave EduSys project will be documented in this file.
 
-## [Unreleased] - 2026-06-21
+## [Unreleased] - 2026-06-24
 
 ### Added
 - **Profile Page**: Added a `/profile` route displaying user details and an interface to update their password.
@@ -17,6 +17,12 @@ All notable changes to the Brainwave EduSys project will be documented in this f
 - **Premium Data Tables**: Completely restyled the generic `Table.tsx` component (powered by `@tanstack/react-table`) to match the new dark mode aesthetics with proper hover states, borders, and loaders.
 
 ### Changed
+- **Prisma 7 Migration**: Upgraded `prisma`, `@prisma/client` (v5.22 → v7.8) in both `backend` and `worker` workspaces.
+  - Prisma 7 dropped native binary engine. New `"client"` engine requires a driver adapter for direct DB connections.
+  - Removed `url` from `datasource db` in `schema.prisma` and removed `engineType = "library"` from generator (both invalid in v7).
+  - Created `apps/backend/prisma.config.ts` with `defineConfig({ datasource: { url } })` — CLI commands (`migrate`, `studio`, etc.) read the connection URL from here.
+  - Installed `@prisma/adapter-mariadb` (Prisma 7's MySQL-compatible adapter) in `backend` and `worker`.
+  - Updated `PrismaClient` in `database.ts` and `worker/index.ts` to use `new PrismaMariaDb(DATABASE_URL)` as the adapter — adapter manages the connection pool internally.
 - **Decoupled Push Subscriptions**: Modified the database schema (`PushNotificationRecipient`) to make `subscriptionId` optional. Broadcasts now successfully generate in-app notifications even if the user has not explicitly subscribed to OS-level web push notifications.
 - **Service Worker Interaction**: Updated `sw.js` to intelligently append `recipientId` data when focusing application windows, enabling background read-tracking of offline web-pushes.
 - **React Router Upgrade**: Migrated from `<BrowserRouter>` to the modern `createBrowserRouter` API (React Router v6/v7) for better data loading support and future-proofing.
