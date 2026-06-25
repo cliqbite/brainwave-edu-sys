@@ -2,7 +2,7 @@
 
 All notable changes to the Brainwave EduSys project will be documented in this file.
 
-## [Unreleased] - 2026-06-24
+## [Unreleased] - 2026-06-25
 
 ### Added
 - **Profile Page**: Added a `/profile` route displaying user details and an interface to update their password.
@@ -27,6 +27,10 @@ All notable changes to the Brainwave EduSys project will be documented in this f
 - **Service Worker Interaction**: Updated `sw.js` to intelligently append `recipientId` data when focusing application windows, enabling background read-tracking of offline web-pushes.
 - **React Router Upgrade**: Migrated from `<BrowserRouter>` to the modern `createBrowserRouter` API (React Router v6/v7) for better data loading support and future-proofing.
 - **Dashboard Navigation**: Upgraded all Quick Action links on the Dashboard from standard `<a>` tags to React Router `<Link>` components to enable fast client-side routing without full page reloads.
+
+### Added
+- **CLAUDE.md Rules**: Added `## Rules` section with migration rules and permission rules to guide AI-assisted development. Covers migration immutability, additive-first strategy, dev vs prod workflow differences, and `prisma.config.ts` env note.
+- **Database Schema Diagram**: Created `docs/DATABASE_SCHEMA.md` — full Mermaid ERD of all 17 tables with column types, relationships, table summary, and key design notes. Rule added: update this file after every migration.
 
 ### Fixed
 - **User Update Bug**: Fixed a `ReferenceError` (`Cannot access 'user' before initialization`) in `users.service.ts` that caused the user update API to crash during audit log creation.

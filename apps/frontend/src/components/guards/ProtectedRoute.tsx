@@ -4,20 +4,24 @@ import { useAuthStore } from '../../stores/auth.store';
 import { authApi } from '../../api/endpoints';
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, accessToken, user, setUser, logout } = useAuthStore();
+  const { isAuthenticated, accessToken, user, setUser, logout, refreshToken } = useAuthStore();
 
   useEffect(() => {
-    // If we have a token but no user object, fetch it
     if (isAuthenticated && accessToken && !user) {
       authApi.getMe()
         .then((res) => {
           if (res.data) setUser(res.data);
         })
         .catch(() => {
+          // getMe failed — token corrupt/expired. Attempt revoke if we have a refresh token,
+          // then clear local state regardless of API result.
+          if (refreshToken) {
+            authApi.logout(refreshToken).catch(() => {});
+          }
           logout();
         });
     }
-  }, [isAuthenticated, accessToken, user, setUser, logout]);
+  }, [isAuthenticated, accessToken, user, setUser, logout, refreshToken]);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

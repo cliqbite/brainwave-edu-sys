@@ -124,3 +124,26 @@ Four system roles: `MASTER` > `ADMIN` > `MODERATOR` > `USER`. Permissions are na
 ### Prod deployment
 
 `docker-compose.prod.yml` — all services containerized (frontend nginx, backend, worker, MySQL, Redis, Caddy). Caddy handles TLS automatically given `FRONTEND_DOMAIN` / `API_DOMAIN` env vars.
+
+---
+
+## Rules
+
+### Migration rules
+
+- **Never edit existing migration files** — they are immutable once committed. Create a new migration instead.
+- **Always commit migration files** alongside the schema change (`prisma/migrations/<timestamp>/migration.sql` + `schema.prisma` in the same commit).
+- **`migration_lock.toml` must stay committed** — it locks the provider (`mysql`). Deleting or changing it can cause Prisma to destroy and recreate migrations.
+- **Prefer additive migrations** (ADD COLUMN, CREATE TABLE) over destructive ones (DROP, RENAME). If destructive is required, add a data-migration step before the destructive SQL.
+- **Dev workflow**: `npm run db:migrate` → generates + applies + regenerates client. Run `npm run db:generate` only when client is out of sync without a schema change.
+- **Prod workflow**: `npm run db:migrate:prod` (`prisma migrate deploy`) — never run `migrate dev` in production; it can prompt interactively and reset data.
+- **`prisma.config.ts` reads `DATABASE_URL` from raw `process.env`** (not Zod-validated `env`). This is intentional — Prisma CLI runs outside the app process. Ensure `DATABASE_URL` is set in `.env.development` / `.env.production` before running any `db:*` commands.
+- When adding a new field to schema: check if it needs a default (required for non-nullable columns on existing tables), otherwise `migrate dev` will fail or prompt for a fill value.
+- **After every migration** — update `docs/DATABASE_SCHEMA.md`: add/remove/modify the affected table block in the ERD, update the table summary row, update the "Last updated" + migration name in the header, and add a changelog entry under `### Changed` in `docs/CHANGELOG.md`.
+
+### Permission rules
+
+- New permission name must be defined in `packages/shared/src/constants/permissions.ts` first.
+- Seed it via `npm run db:seed` after adding.
+- Add `requirePermission('...')` to the route — never protect routes with ad-hoc role checks; use the permission system.
+- MASTER role bypasses all permission checks — never add explicit MASTER guards in service layer.
