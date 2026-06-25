@@ -69,7 +69,15 @@ export async function login(
   const user = await prisma.user.findUnique({
     where: { email, deletedAt: null },
     include: {
-      role: { select: { id: true, name: true, displayName: true } },
+      role: {
+        select: {
+          id: true,
+          name: true,
+          displayName: true,
+          rolePermissions: { select: { permission: { select: { name: true } } } },
+        },
+      },
+      userPermissions: { select: { permission: { select: { name: true } }, granted: true } },
     },
   });
 
@@ -111,6 +119,14 @@ export async function login(
 
   logger.info({ userId: user.id }, 'User logged in');
 
+  const resolvedPermissions = new Set(
+    user.role.rolePermissions.map((rp) => rp.permission.name),
+  );
+  for (const up of user.userPermissions) {
+    if (up.granted) resolvedPermissions.add(up.permission.name);
+    else resolvedPermissions.delete(up.permission.name);
+  }
+
   return {
     accessToken,
     refreshToken,
@@ -124,7 +140,12 @@ export async function login(
       rollNumber: user.rollNumber,
       department: user.department,
       className: user.className,
-      role: user.role,
+      role: {
+        id: user.role.id,
+        name: user.role.name,
+        displayName: user.role.displayName,
+      },
+      permissions: Array.from(resolvedPermissions),
       status: user.status,
       createdAt: user.createdAt.toISOString(),
     },
