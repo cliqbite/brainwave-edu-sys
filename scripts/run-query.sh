@@ -13,7 +13,7 @@
 #     bash scripts/run-query.sh ./path/to/query.sql
 # =============================================================
 
-COMPOSE="docker compose -f docker-compose.prod.yml"
+COMPOSE="docker compose -f docker-compose.prod.yml --env-file .env.production"
 
 if [ ! -f ".env.production" ]; then
   echo "❌  .env.production not found. Run from the project root."

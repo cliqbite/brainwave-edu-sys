@@ -8,7 +8,7 @@
 #   Available:         backend | frontend | worker | mysql | redis | caddy
 # =============================================================
 
-COMPOSE="docker compose -f docker-compose.prod.yml"
+COMPOSE="docker compose -f docker-compose.prod.yml --env-file .env.production"
 SERVICE="${1:-}"
 
 echo ""

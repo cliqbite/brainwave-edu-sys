@@ -8,7 +8,7 @@
 # =============================================================
 set -e
 
-COMPOSE="docker compose -f docker-compose.prod.yml"
+COMPOSE="docker compose -f docker-compose.prod.yml --env-file .env.production"
 BACKUP_FILE="$1"
 
 if [ -z "$BACKUP_FILE" ]; then

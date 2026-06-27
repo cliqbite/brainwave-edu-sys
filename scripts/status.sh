@@ -3,7 +3,7 @@
 # status.sh — CHECK STATUS OF ALL PRODUCTION SERVICES
 # =============================================================
 
-COMPOSE="docker compose -f docker-compose.prod.yml"
+COMPOSE="docker compose -f docker-compose.prod.yml --env-file .env.production"
 
 echo ""
 echo "======================================================"
