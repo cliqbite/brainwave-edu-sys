@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Modal, Input, Button, Select, showToast } from '../ui';
 import { usersApi, rolesApi } from '../../api/endpoints';
+import { useAuthStore } from '../../stores/auth.store';
 
 interface UserFormModalProps {
   isOpen: boolean;
@@ -12,6 +13,8 @@ interface UserFormModalProps {
 export const UserFormModal = ({ isOpen, onClose, user }: UserFormModalProps) => {
   const queryClient = useQueryClient();
   const isEditing = !!user;
+  const { hasRole } = useAuthStore();
+  const isMaster = hasRole('MASTER');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -73,10 +76,12 @@ export const UserFormModal = ({ isOpen, onClose, user }: UserFormModalProps) => 
 
   const roleOptions = [
     { value: '', label: loadingRoles ? 'Loading roles...' : 'Select a role', disabled: true },
-    ...(rolesData?.data || []).map((r: any) => ({
-      value: r.id.toString(),
-      label: r.displayName,
-    }))
+    ...(rolesData?.data || [])
+      .filter((r: any) => isMaster || r.name !== 'MASTER')
+      .map((r: any) => ({
+        value: r.id.toString(),
+        label: r.displayName,
+      }))
   ];
 
   return (

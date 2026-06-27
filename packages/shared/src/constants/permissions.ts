@@ -84,7 +84,7 @@ export const PERMISSION_DEFINITIONS: Array<{
 /** Default permissions granted to each role during seeding */
 export const DEFAULT_ROLE_PERMISSIONS: Record<string, PermissionName[]> = {
   MASTER: Object.values(PERMISSIONS),
-  ADMIN: Object.values(PERMISSIONS).filter(p => p !== PERMISSIONS.AUDIT_LOG_VIEW),
+  ADMIN: Object.values(PERMISSIONS).filter(p => p !== PERMISSIONS.AUDIT_LOG_VIEW && p !== PERMISSIONS.USER_IMPORT),
   MODERATOR: [], // Moderators get NO default permissions — admin grants individually
   USER: [],      // Normal users get NO management permissions
 };

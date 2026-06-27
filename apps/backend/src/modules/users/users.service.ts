@@ -3,6 +3,7 @@ import { prisma } from '../../config/database.js';
 import { logger } from '../../config/logger.js';
 import {
   ConflictError,
+  ForbiddenError,
   NotFoundError,
 } from '../../utils/errors.js';
 import {
@@ -133,13 +134,21 @@ export async function getById(id: number) {
   };
 }
 
-export async function create(data: CreateUserInput, createdById: number) {
+export async function create(data: CreateUserInput, createdById: number, creatorRoleName: string) {
   const existingUser = await prisma.user.findUnique({
     where: { email: data.email },
   });
 
   if (existingUser) {
     throw new ConflictError('A user with this email already exists');
+  }
+
+  // Only MASTER can assign the MASTER role
+  if (data.roleId) {
+    const targetRole = await prisma.role.findUnique({ where: { id: data.roleId }, select: { name: true } });
+    if (targetRole?.name === ROLES.MASTER && creatorRoleName !== ROLES.MASTER) {
+      throw new ForbiddenError('Only MASTER can assign the MASTER role');
+    }
   }
 
   // Default to USER role if not specified
@@ -211,13 +220,21 @@ export async function create(data: CreateUserInput, createdById: number) {
   return user;
 }
 
-export async function update(id: number, data: UpdateUserInput, updatedById: number) {
+export async function update(id: number, data: UpdateUserInput, updatedById: number, updaterRoleName: string) {
   const existingUser = await prisma.user.findFirst({
     where: { id, deletedAt: null },
   });
 
   if (!existingUser) {
     throw new NotFoundError('User not found');
+  }
+
+  // Only MASTER can assign the MASTER role
+  if (data.roleId) {
+    const targetRole = await prisma.role.findUnique({ where: { id: data.roleId }, select: { name: true } });
+    if (targetRole?.name === ROLES.MASTER && updaterRoleName !== ROLES.MASTER) {
+      throw new ForbiddenError('Only MASTER can assign the MASTER role');
+    }
   }
 
   // Check email uniqueness if email is being changed

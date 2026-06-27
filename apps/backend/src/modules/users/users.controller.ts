@@ -14,13 +14,13 @@ export async function getById(req: Request, res: Response): Promise<void> {
 }
 
 export async function create(req: Request, res: Response): Promise<void> {
-  const user = await usersService.create(req.body, req.user!.id);
+  const user = await usersService.create(req.body, req.user!.id, req.user!.role.name);
   sendSuccess(res, user, 'User created', 201);
 }
 
 export async function update(req: Request, res: Response): Promise<void> {
   const id = Number(req.params.id);
-  const user = await usersService.update(id, req.body, req.user!.id);
+  const user = await usersService.update(id, req.body, req.user!.id, req.user!.role.name);
   sendSuccess(res, user, 'User updated');
 }
 
