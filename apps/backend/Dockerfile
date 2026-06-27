@@ -55,6 +55,9 @@ COPY --from=builder /app/apps/backend/prisma ./apps/backend/prisma
 COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
+# Prisma v7: CLI discovers prisma.config.ts from CWD (/app)
+COPY --from=builder /app/apps/backend/prisma.config.ts ./prisma.config.ts
+
 # Create upload directory
 RUN mkdir -p /app/data/uploads && chown -R brainwave:nodejs /app/data
 
