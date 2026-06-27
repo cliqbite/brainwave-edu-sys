@@ -158,6 +158,12 @@ services:
         VITE_APP_NAME: ${APP_NAME:-Brainwave EduSys}
     container_name: brainwave-frontend
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
     networks:
       - brainwave-internal
       - dokploy-network
