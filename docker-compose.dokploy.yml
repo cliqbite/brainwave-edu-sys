@@ -4,7 +4,7 @@
 # Differences from docker-compose.prod.yml:
 #   - No Caddy service (Dokploy uses Traefik built-in)
 #   - Frontend + Backend have Traefik labels for routing
-#   - Services join dokploy-network so Traefik can reach them
+#   - Services join dokploy-app-network so Traefik can reach them
 #   - Internal services (MySQL, Redis) stay on private network
 # ============================================================
 
@@ -103,14 +103,14 @@ services:
       start_period: 30s
     networks:
       - brainwave-internal
-      - dokploy-network
+      - dokploy-app-network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.brainwave-backend.rule=Host(`${API_DOMAIN}`)"
       - "traefik.http.routers.brainwave-backend.entrypoints=websecure"
       - "traefik.http.routers.brainwave-backend.tls.certresolver=letsencrypt"
       - "traefik.http.services.brainwave-backend.loadbalancer.server.port=4000"
-      - "traefik.docker.network=dokploy-network"
+      - "traefik.docker.network=dokploy-app-network"
     deploy:
       resources:
         limits:
@@ -166,14 +166,14 @@ services:
       retries: 3
     networks:
       - brainwave-internal
-      - dokploy-network
+      - dokploy-app-network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.brainwave-frontend.rule=Host(`${FRONTEND_DOMAIN}`)"
       - "traefik.http.routers.brainwave-frontend.entrypoints=websecure"
       - "traefik.http.routers.brainwave-frontend.tls.certresolver=letsencrypt"
       - "traefik.http.services.brainwave-frontend.loadbalancer.server.port=80"
-      - "traefik.docker.network=dokploy-network"
+      - "traefik.docker.network=dokploy-app-network"
     deploy:
       resources:
         limits:
@@ -190,5 +190,5 @@ volumes:
 networks:
   brainwave-internal:
     driver: bridge
-  dokploy-network:
+  dokploy-app-network:
     external: true
