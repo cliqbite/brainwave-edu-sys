@@ -80,7 +80,7 @@ export const GroupFormModal: React.FC<GroupFormModalProps> = ({ isOpen, onClose,
           />
         </div>
 
-        <div className="flex justify-end gap-3 pt-4 border-t border-[rgba(255,255,255,0.1)]">
+        <div className="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-white/10">
           <Button type="button" variant="ghost" onClick={onClose}>
             Cancel
           </Button>

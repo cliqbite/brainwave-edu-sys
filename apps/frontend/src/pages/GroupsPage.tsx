@@ -145,7 +145,7 @@ const GroupsPage = () => {
       </div>
 
       <Card noPadding>
-        <div className="p-4 border-b border-[rgba(255,255,255,0.1)] flex gap-4">
+        <div className="p-4 border-b border-slate-200 dark:border-white/10 flex gap-4">
           <Input 
             placeholder="Search groups..." 
             icon={<Search size={18} />}

@@ -69,6 +69,18 @@ Seed uses `process.env.DATABASE_URL` directly (not Zod-validated `env`) because 
 
 ---
 
+## Light/Dark theme system
+
+- Dark mode via `.dark` class on `<html>` — set by `ThemeProvider` in `main.tsx` reading `useUiStore().theme`.
+- Theme persisted in localStorage via `zustand/middleware` `persist` (key: `ui-storage`).
+- Default: `dark`. User switches in Profile → Appearance (Sun/Moon buttons calling `setTheme()`).
+- Tailwind v4 directive: `@variant dark (&:where(.dark, .dark *))` in `index.css` line 4.
+- **Never hardcode dark-only classes without light fallback.** Pattern: `bg-white dark:bg-slate-800`, `border-slate-200 dark:border-white/10`, `text-slate-700 dark:text-slate-300`.
+- **Never use `border-[rgba(255,255,255,...)]`** — use `border-slate-200 dark:border-white/10` instead.
+- Semantic utilities defined in `index.css` `@layer components`: `text-muted`, `text-primary`, `text-danger`, `text-success`, `text-muted-foreground`, `bg-primary`, `bg-muted`, `border-border` — all have `.dark` overrides.
+
+---
+
 ## Login response must include permissions
 
 `auth.service.ts` `login()` must resolve and return `permissions[]` in the user object.

@@ -34,14 +34,14 @@ export const Modal = ({ isOpen, onClose, title, children, footer, maxWidth = 'md
   }[maxWidth];
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/80 backdrop-blur-sm animate-fade-in" onClick={onClose}>
-      <div 
-        className={`relative w-full max-h-[90vh] flex flex-col bg-slate-800 border border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-slide-up ${maxWidthClass}`} 
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 dark:bg-slate-900/80 backdrop-blur-sm animate-fade-in" onClick={onClose}>
+      <div
+        className={`relative w-full max-h-[90vh] flex flex-col bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-slide-up ${maxWidthClass}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-5 sm:p-6 border-b border-white/10">
+        <div className="flex items-center justify-between p-5 sm:p-6 border-b border-slate-200 dark:border-white/10">
           <h3 className="text-lg font-semibold">{title}</h3>
-          <button onClick={onClose} className="btn-icon !p-1 hover:bg-white/10">
+          <button onClick={onClose} className="btn-icon !p-1">
             <X size={20} />
           </button>
         </div>
@@ -49,7 +49,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, maxWidth = 'md
           {children}
         </div>
         {footer && (
-          <div className="p-5 sm:p-6 border-t border-white/10 bg-slate-900/20 flex items-center justify-end gap-3">
+          <div className="p-5 sm:p-6 border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900/20 flex items-center justify-end gap-3">
             {footer}
           </div>
         )}

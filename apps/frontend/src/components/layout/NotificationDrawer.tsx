@@ -48,37 +48,37 @@ export const NotificationDrawer = ({ isOpen, onClose }: NotificationDrawerProps)
   return (
     <>
       {/* Backdrop */}
-      <div 
-        className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm animate-fade-in"
+      <div
+        className="fixed inset-0 z-40 bg-slate-900/40 dark:bg-slate-900/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
 
       {/* Drawer */}
-      <div className={`fixed inset-y-0 right-0 z-50 w-[calc(100vw-16px)] sm:w-96 bg-slate-900 border-l border-white/10 shadow-2xl flex flex-col transform transition-transform duration-300 ease-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        
+      <div className={`fixed inset-y-0 right-0 z-50 w-[calc(100vw-16px)] sm:w-96 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-white/10 shadow-2xl flex flex-col transform transition-transform duration-300 ease-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-slate-800/30">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-slate-800/30">
           <div>
-            <h2 className="text-lg font-bold text-slate-100">Notifications</h2>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Notifications</h2>
             {unreadCount > 0 && (
-              <p className="text-xs text-brand-400 font-medium mt-0.5">
+              <p className="text-xs text-brand-500 dark:text-brand-400 font-medium mt-0.5">
                 {unreadCount} unread message{unreadCount !== 1 ? 's' : ''}
               </p>
             )}
           </div>
           <div className="flex items-center gap-3">
             {unreadCount > 0 && (
-              <button 
+              <button
                 onClick={handleMarkAllRead}
-                className="p-2 text-slate-400 hover:text-brand-400 hover:bg-brand-500/10 rounded-lg transition-colors group relative"
+                className="p-2 text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-brand-500/10 rounded-lg transition-colors"
                 title="Mark all as read"
               >
                 <CheckCheck size={18} />
               </button>
             )}
-            <button 
+            <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors"
             >
               <X size={20} />
             </button>
@@ -104,33 +104,33 @@ export const NotificationDrawer = ({ isOpen, onClose }: NotificationDrawerProps)
           {isLoadingNotifs ? (
             <div className="p-8 text-center flex flex-col items-center">
               <div className="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-              <p className="text-sm text-slate-400">Loading notifications...</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Loading notifications...</p>
             </div>
           ) : notificationsData && notificationsData.length > 0 ? (
             <div className="space-y-2">
               {notificationsData.map((notif: any) => (
-                <div 
-                  key={notif.id} 
+                <div
+                  key={notif.id}
                   onClick={() => handleNotificationClick(notif)}
                   className={`p-4 rounded-xl border flex gap-3 transition-colors cursor-pointer ${
-                    !notif.inAppRead 
-                      ? 'border-brand-500/30 bg-brand-500/5 hover:bg-brand-500/10' 
-                      : 'border-transparent hover:bg-slate-800/40'
+                    !notif.inAppRead
+                      ? 'border-brand-500/30 bg-brand-500/5 hover:bg-brand-500/10'
+                      : 'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800/40'
                   }`}
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start mb-1">
-                      <p className={`text-sm truncate pr-2 ${!notif.inAppRead ? 'font-bold text-white' : 'font-semibold text-slate-300'}`}>
+                      <p className={`text-sm truncate pr-2 ${!notif.inAppRead ? 'font-bold text-slate-900 dark:text-white' : 'font-semibold text-slate-600 dark:text-slate-300'}`}>
                         {notif.notification?.title}
                       </p>
                       {!notif.inAppRead && (
                         <span className="w-2.5 h-2.5 bg-brand-500 rounded-full mt-1 flex-shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.6)] animate-pulse"></span>
                       )}
                     </div>
-                    <p className={`text-xs leading-relaxed line-clamp-3 ${!notif.inAppRead ? 'text-slate-300' : 'text-slate-400'}`}>
+                    <p className={`text-xs leading-relaxed line-clamp-3 ${!notif.inAppRead ? 'text-slate-600 dark:text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
                       {notif.notification?.body}
                     </p>
-                    <p className="text-[10px] text-slate-500 mt-2 font-medium">
+                    <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-2 font-medium">
                       {new Date(notif.createdAt).toLocaleString()}
                     </p>
                   </div>
@@ -139,10 +139,10 @@ export const NotificationDrawer = ({ isOpen, onClose }: NotificationDrawerProps)
             </div>
           ) : (
             <div className="p-8 text-center flex flex-col items-center justify-center h-full">
-              <div className="w-16 h-16 rounded-full bg-slate-800/50 flex items-center justify-center mb-4 border border-white/5">
-                <CheckCheck size={28} className="text-slate-500" />
+              <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center mb-4 border border-slate-200 dark:border-white/5">
+                <CheckCheck size={28} className="text-slate-400 dark:text-slate-500" />
               </div>
-              <p className="text-slate-300 font-medium">You're all caught up!</p>
+              <p className="text-slate-700 dark:text-slate-300 font-medium">You're all caught up!</p>
               <p className="text-xs text-slate-500 mt-1">No new notifications.</p>
             </div>
           )}

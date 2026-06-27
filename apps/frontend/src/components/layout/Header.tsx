@@ -62,14 +62,14 @@ export const Header = () => {
 
   return (
     <>
-      <header className="h-16 bg-slate-900/80 backdrop-blur-xl border-b border-white/10 flex items-center justify-between px-8 z-30 sticky top-0 shrink-0">
+      <header className="h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 flex items-center justify-between px-8 z-30 sticky top-0 shrink-0">
         <div className="flex items-center gap-4 flex-1">
           <div className="relative w-64 hidden md:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={16} />
-            <input 
-              type="text" 
-              placeholder="Search..." 
-              className="form-input !pl-9 !py-1.5 !bg-[rgba(15,23,42,0.4)] !border-transparent focus:!border-primary"
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="form-input !pl-9 !py-1.5"
             />
           </div>
         </div>
@@ -112,23 +112,20 @@ export const Header = () => {
                 onClick={() => setShowDropdown(false)}
               ></div>
               <div className="absolute right-0 mt-2 w-48 glass-card z-20 py-1 overflow-hidden animate-slide-up">
-                <div className="px-4 py-2 border-b border-[rgba(255,255,255,0.1)] mb-1">
+                <div className="px-4 py-2 border-b border-slate-200 dark:border-white/10 mb-1">
                   <p className="text-sm font-medium truncate">{user?.name}</p>
-                  <p className="text-xs text-muted truncate">{user?.email}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{user?.email}</p>
                 </div>
-                <button 
-                  onClick={() => {
-                    navigate('/profile');
-                    setShowDropdown(false);
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-secondary hover:bg-[rgba(255,255,255,0.05)] flex items-center gap-2 transition-colors"
+                <button
+                  onClick={() => { navigate('/profile'); setShowDropdown(false); }}
+                  className="w-full text-left px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 flex items-center gap-2 transition-colors"
                 >
                   <User size={16} />
                   Profile
                 </button>
-                <button 
+                <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-danger hover:bg-[rgba(239,68,68,0.1)] flex items-center gap-2 transition-colors"
+                  className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 flex items-center gap-2 transition-colors"
                 >
                   <LogOut size={16} />
                   Logout

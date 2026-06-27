@@ -18,8 +18,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     if (variant === 'primary') baseClass += ' btn-primary';
     else if (variant === 'secondary') baseClass += ' btn-secondary';
     else if (variant === 'danger') baseClass += ' btn-danger';
-    else if (variant === 'outline') baseClass += ' border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.05)]';
-    else if (variant === 'ghost') baseClass += ' hover:bg-[rgba(255,255,255,0.05)] bg-transparent';
+    else if (variant === 'outline') baseClass += ' border border-slate-300 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 text-slate-700 dark:text-slate-300';
+    else if (variant === 'ghost') baseClass += ' hover:bg-slate-100 dark:hover:bg-white/5 bg-transparent text-slate-700 dark:text-slate-300';
     
     // Size
     if (size === 'sm') baseClass += ' text-xs py-1.5 px-3';

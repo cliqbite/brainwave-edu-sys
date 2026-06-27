@@ -106,16 +106,16 @@ const MessageHistoryPage = () => {
           emptyStateTitle="No campaigns found"
           emptyStateDescription="You haven't sent any messages yet."
           renderSubComponent={({ row }) => (
-            <div className="p-6 bg-slate-900/50">
+            <div className="p-6 bg-slate-100 dark:bg-slate-900/50">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-slate-400 uppercase tracking-wider">Message Content</h4>
-                  <div className="p-4 rounded-xl border border-white/5 bg-slate-800/30 text-slate-200">
+                  <h4 className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Message Content</h4>
+                  <div className="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-white dark:bg-slate-800/30 text-slate-700 dark:text-slate-200">
                     <p className="whitespace-pre-wrap">{row.original.content || 'No content available.'}</p>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h4 className="text-sm font-medium text-slate-400 uppercase tracking-wider">Delivery Stats</h4>
+                  <h4 className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Delivery Stats</h4>
                   <div className="flex items-center gap-6">
                     <div className="flex items-center gap-3 bg-emerald-500/10 text-emerald-400 p-3 rounded-xl flex-1 border border-emerald-500/20">
                       <CheckCircle2 size={24} />

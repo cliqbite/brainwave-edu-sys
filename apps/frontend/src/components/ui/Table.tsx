@@ -22,9 +22,9 @@ export function Table<T>({
 }: TableProps<T>) {
   return (
     <div className="space-y-4">
-      <div className="w-full overflow-x-auto rounded-xl border border-white/10 bg-slate-800/20">
-        <table className="w-full text-left text-sm text-slate-300">
-          <thead className="bg-slate-800/40 border-b border-white/10 text-slate-400 font-medium uppercase tracking-wider text-xs">
+      <div className="w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-slate-800/20">
+        <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+          <thead className="bg-slate-50 dark:bg-slate-800/40 border-b border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider text-xs">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -37,7 +37,7 @@ export function Table<T>({
               </tr>
             ))}
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-slate-100 dark:divide-white/5">
             {isLoading ? (
               <tr>
                 <td colSpan={table.getAllColumns().length} className="text-center py-10">
@@ -54,7 +54,7 @@ export function Table<T>({
             ) : (
               table.getRowModel().rows.map((row) => (
                 <React.Fragment key={row.id}>
-                  <tr className="hover:bg-white/[0.02] transition-colors">
+                  <tr className="hover:bg-slate-50 dark:hover:bg-white/2 transition-colors">
                     {row.getVisibleCells().map((cell) => (
                       <td key={cell.id} className="px-6 py-4">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -62,8 +62,8 @@ export function Table<T>({
                     ))}
                   </tr>
                   {row.getIsExpanded() && renderSubComponent && (
-                    <tr className="bg-black/20">
-                      <td colSpan={row.getVisibleCells().length} className="p-0 border-b border-white/5">
+                    <tr className="bg-slate-50 dark:bg-black/20">
+                      <td colSpan={row.getVisibleCells().length} className="p-0 border-b border-slate-200 dark:border-white/5">
                         {renderSubComponent({ row })}
                       </td>
                     </tr>
@@ -85,34 +85,10 @@ export function Table<T>({
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              className="btn-icon border border-[rgba(255,255,255,0.1)]"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <ChevronsLeft size={16} />
-            </button>
-            <button
-              className="btn-icon border border-[rgba(255,255,255,0.1)]"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <ChevronLeft size={16} />
-            </button>
-            <button
-              className="btn-icon border border-[rgba(255,255,255,0.1)]"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <ChevronRight size={16} />
-            </button>
-            <button
-              className="btn-icon border border-[rgba(255,255,255,0.1)]"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              <ChevronsRight size={16} />
-            </button>
+            <button className="btn-icon border border-slate-200 dark:border-white/10" onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}><ChevronsLeft size={16} /></button>
+            <button className="btn-icon border border-slate-200 dark:border-white/10" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}><ChevronLeft size={16} /></button>
+            <button className="btn-icon border border-slate-200 dark:border-white/10" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}><ChevronRight size={16} /></button>
+            <button className="btn-icon border border-slate-200 dark:border-white/10" onClick={() => table.setPageIndex(table.getPageCount() - 1)} disabled={!table.getCanNextPage()}><ChevronsRight size={16} /></button>
           </div>
         </div>
       )}

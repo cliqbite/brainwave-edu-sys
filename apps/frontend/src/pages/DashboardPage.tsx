@@ -105,40 +105,40 @@ const UserDashboard = () => {
           </div>
         ) : !notificationsData || notificationsData.length === 0 ? (
           <div className="text-center py-20 flex flex-col items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-4">
-              <Bell className="text-slate-500" size={32} />
+            <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+              <Bell className="text-slate-400 dark:text-slate-500" size={32} />
             </div>
-            <h3 className="text-lg font-medium text-slate-300">You're all caught up!</h3>
+            <h3 className="text-lg font-medium text-slate-600 dark:text-slate-300">You're all caught up!</h3>
             <p className="text-slate-500 mt-2">You have no new notifications.</p>
           </div>
         ) : (
           <div className="space-y-4">
             {notificationsData.map((notification: any) => (
-              <div 
-                key={notification.id} 
+              <div
+                key={notification.id}
                 onClick={() => handleNotificationClick(notification)}
                 className={`p-4 rounded-xl border flex gap-4 transition-colors cursor-pointer ${
-                  !notification.inAppRead 
-                    ? 'border-brand-500/30 bg-brand-500/5 hover:bg-brand-500/10' 
-                    : 'border-white/10 bg-slate-800/20 hover:bg-slate-800/40'
+                  !notification.inAppRead
+                    ? 'border-brand-500/30 bg-brand-500/5 hover:bg-brand-500/10'
+                    : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-800/20 hover:bg-slate-100 dark:hover:bg-slate-800/40'
                 }`}
               >
-                <div className={`p-2 rounded-lg h-fit ${!notification.inAppRead ? 'bg-brand-500/20 text-brand-300' : 'bg-slate-700 text-slate-400'}`}>
+                <div className={`p-2 rounded-lg h-fit ${!notification.inAppRead ? 'bg-brand-500/20 text-brand-500 dark:text-brand-300' : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
                   <MessageSquare size={20} />
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
-                    <h3 className={`font-semibold ${!notification.inAppRead ? 'text-white' : 'text-slate-300'}`}>
+                    <h3 className={`font-semibold ${!notification.inAppRead ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-300'}`}>
                       {notification.notification?.title}
                     </h3>
                     {!notification.inAppRead && (
                       <span className="w-2.5 h-2.5 bg-brand-500 rounded-full mt-1 flex-shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.6)] animate-pulse"></span>
                     )}
                   </div>
-                  <p className={`text-sm mt-1 ${!notification.inAppRead ? 'text-slate-300' : 'text-slate-400'}`}>
+                  <p className={`text-sm mt-1 ${!notification.inAppRead ? 'text-slate-600 dark:text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
                     {notification.notification?.body}
                   </p>
-                  <p className="text-xs text-slate-500 mt-3">{new Date(notification.createdAt).toLocaleString()}</p>
+                  <p className="text-xs text-slate-400 dark:text-slate-500 mt-3">{new Date(notification.createdAt).toLocaleString()}</p>
                 </div>
               </div>
             ))}
@@ -209,18 +209,18 @@ const AdminDashboard = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">Dashboard</h1>
-          <p className="text-slate-400">Overview of your institution's activity</p>
+          <p className="text-slate-500 dark:text-slate-400">Overview of your institution's activity</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, i) => (
-          <Card key={i} className="flex items-center gap-4 hover:border-white/20 transition-colors">
+          <Card key={i} className="flex items-center gap-4 hover:border-slate-300 dark:hover:border-white/20 transition-colors">
             <div className={`p-3 rounded-xl ${stat.bg}`}>
               <stat.icon className={stat.color} size={24} />
             </div>
             <div>
-              <p className="text-sm text-slate-400">{stat.title}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">{stat.title}</p>
               <h3 className="text-2xl font-bold">{stat.value}</h3>
             </div>
           </Card>
@@ -245,31 +245,31 @@ const AdminDashboard = () => {
         <Card>
           <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
           <div className="space-y-3">
-            <Link to="/messages/send" className="flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-slate-800/30 hover:bg-slate-800 transition-colors group">
-              <div className="p-2 bg-brand-500/10 text-brand-400 rounded-lg group-hover:bg-brand-500 group-hover:text-white transition-colors">
+            <Link to="/messages/send" className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
+              <div className="p-2 bg-brand-500/10 text-brand-500 dark:text-brand-400 rounded-lg group-hover:bg-brand-500 group-hover:text-white transition-colors">
                 <MessageSquare size={18} />
               </div>
               <div>
                 <p className="font-medium text-sm">Send Broadcast</p>
-                <p className="text-xs text-slate-400">Create a new message campaign</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Create a new message campaign</p>
               </div>
             </Link>
-            <Link to="/import" className="flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-slate-800/30 hover:bg-slate-800 transition-colors group">
-              <div className="p-2 bg-slate-700 text-slate-300 rounded-lg group-hover:bg-slate-600 group-hover:text-white transition-colors">
+            <Link to="/import" className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
+              <div className="p-2 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg group-hover:bg-slate-600 group-hover:text-white transition-colors">
                 <Users size={18} />
               </div>
               <div>
                 <p className="font-medium text-sm">Import Users</p>
-                <p className="text-xs text-slate-400">Upload CSV or Excel file</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Upload CSV or Excel file</p>
               </div>
             </Link>
-            <Link to="/groups" className="flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-slate-800/30 hover:bg-slate-800 transition-colors group">
-              <div className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+            <Link to="/groups" className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
+              <div className="p-2 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors">
                 <UsersRound size={18} />
               </div>
               <div>
                 <p className="font-medium text-sm">Manage Groups</p>
-                <p className="text-xs text-slate-400">Organize students into classes</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Organize students into classes</p>
               </div>
             </Link>
           </div>

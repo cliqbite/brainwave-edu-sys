@@ -123,11 +123,11 @@ const MessagesPage = () => {
               required
             ></textarea>
             <p className="text-xs text-muted mt-2">
-              Available variables: <code className="px-1 py-0.5 bg-black/20 rounded">{"{name}"}</code>, <code className="px-1 py-0.5 bg-black/20 rounded">{"{email}"}</code>
+              Available variables: <code className="px-1 py-0.5 bg-slate-100 dark:bg-black/20 rounded">{"{name}"}</code>, <code className="px-1 py-0.5 bg-slate-100 dark:bg-black/20 rounded">{"{email}"}</code>
             </p>
           </div>
 
-          <div className="flex justify-end pt-4 border-t border-[rgba(255,255,255,0.1)]">
+          <div className="flex justify-end pt-4 border-t border-slate-200 dark:border-white/10">
             <Button type="submit" isLoading={isSending} leftIcon={<Send size={18} />}>
               Send Broadcast
             </Button>

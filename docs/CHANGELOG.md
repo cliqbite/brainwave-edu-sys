@@ -2,7 +2,7 @@
 
 All notable changes to the Brainwave EduSys project will be documented in this file.
 
-## [Unreleased] - 2026-06-25
+## [Unreleased] - 2026-06-27
 
 ### Added
 - **Profile Page**: Added a `/profile` route displaying user details and an interface to update their password.
@@ -29,6 +29,15 @@ All notable changes to the Brainwave EduSys project will be documented in this f
 - **Dashboard Navigation**: Upgraded all Quick Action links on the Dashboard from standard `<a>` tags to React Router `<Link>` components to enable fast client-side routing without full page reloads.
 
 ### Added
+- **Light/Dark Theme**: Full light and dark mode support across entire frontend using Tailwind v4 class strategy (`.dark` on `<html>`).
+  - `ThemeProvider` in `main.tsx` syncs `<html>` class with Zustand `ui.store.ts` `theme` field.
+  - Theme persisted via `zustand/middleware` `persist` under key `ui-storage`.
+  - Default theme: `dark`. Switchable per user in Profile → Appearance section.
+  - `index.css` defines all semantic utilities: `text-muted`, `text-primary`, `text-danger`, `text-success`, `text-muted-foreground`, `bg-primary`, `bg-muted`, `border-border` — all themed for light/dark.
+  - All glass-card, btn-secondary, btn-danger, btn-icon, form-label, form-input, badge variants have `.dark` overrides.
+  - Files updated: `Sidebar.tsx`, `Header.tsx`, `NotificationDrawer.tsx`, `Modal.tsx`, `Table.tsx`, `Select.tsx`, `Button.tsx`, `GroupFormModal.tsx`, `GroupMembersModal.tsx`, `DashboardPage.tsx`, `UsersPage.tsx`, `GroupsPage.tsx`, `MessagesPage.tsx`, `MessageHistoryPage.tsx`, `ProfilePage.tsx`.
+- **Theme Toggle UI**: Sun/Moon toggle buttons added to `ProfilePage.tsx` under "Appearance" card — calls `useUiStore().setTheme()`.
+- **Dynamic Toaster**: `App.tsx` `Toaster` reads `useUiStore().theme` and switches `background`, `color`, `border` styles between light and dark.
 - **CLAUDE.md Rules**: Added `## Rules` section with migration rules and permission rules to guide AI-assisted development. Covers migration immutability, additive-first strategy, dev vs prod workflow differences, and `prisma.config.ts` env note.
 - **Database Schema Diagram**: Created `docs/DATABASE_SCHEMA.md` — full Mermaid ERD of all 17 tables with column types, relationships, table summary, and key design notes. Rule added: update this file after every migration.
 

@@ -103,7 +103,7 @@ const UsersPage = () => {
       header: 'Groups',
       cell: info => {
         const count = info.row.original._count?.groups || 0;
-        return <span className="text-slate-300">{count} groups</span>;
+        return <span className="text-slate-600 dark:text-slate-300">{count} groups</span>;
       },
     }),
     columnHelper.accessor('id', {
@@ -173,7 +173,7 @@ const UsersPage = () => {
       </div>
 
       <Card noPadding>
-        <div className="p-4 border-b border-white/10 flex gap-4">
+        <div className="p-4 border-b border-slate-200 dark:border-white/10 flex gap-4">
           <Input 
             placeholder="Search users..." 
             value={search}
