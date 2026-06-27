@@ -200,6 +200,17 @@ Four system roles: `MASTER` > `ADMIN` > `MODERATOR` > `USER`. Permissions are na
 
 ## Rules
 
+### End-of-session documentation (MANDATORY)
+
+After any conversation where code, config, permissions, DB schema, or scripts changed:
+
+1. Update `CLAUDE.md` (tech stack, architecture, rules sections as relevant).
+2. Update `.agents/RULES/` files (permissions, workflow, invariants).
+3. Add entry to `docs/CHANGELOG.md` under `[Unreleased]`.
+4. Update `docs/DATABASE_SCHEMA.md` if any migration was created.
+5. Update `docs/deployment.md` if deployment process or scripts changed.
+6. Save non-obvious decisions to project memory (`~/.claude/projects/.../memory/`).
+
 ### Migration rules
 
 - **Never edit existing migration files** — they are immutable once committed. Create a new migration instead.
