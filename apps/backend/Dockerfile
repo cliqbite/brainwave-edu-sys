@@ -27,7 +27,7 @@ COPY tsconfig.base.json ./
 RUN npx prisma generate --schema=apps/backend/prisma/schema.prisma
 
 # Build shared package
-RUN npm run build -w @brainwave/shared || true
+RUN npm run build -w @brainwave/shared
 
 # Build backend
 RUN npm run build -w @brainwave/backend

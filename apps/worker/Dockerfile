@@ -22,7 +22,7 @@ COPY tsconfig.base.json ./
 # Generate Prisma client (worker shares the same schema)
 RUN npx prisma generate --schema=apps/backend/prisma/schema.prisma
 
-RUN npm run build -w @brainwave/shared || true
+RUN npm run build -w @brainwave/shared
 RUN npm run build -w @brainwave/worker
 
 # ---- Stage 2: Production ----
