@@ -46,7 +46,7 @@ const LoginPage = () => {
           <div className="w-16 h-16 bg-[rgba(99,102,241,0.2)] rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[rgba(99,102,241,0.3)] shadow-[0_0_20px_rgba(99,102,241,0.2)]">
             <GraduationCap size={32} className="text-primary" />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">Brainwave EduSys</h1>
+          <h1 className="text-2xl font-bold mb-2">Brainwave EduSys</h1>
           <p className="text-muted text-sm">Sign in to manage your institution</p>
         </div>
 

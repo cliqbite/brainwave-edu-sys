@@ -37,6 +37,15 @@ All notable changes to the Brainwave EduSys project will be documented in this f
   - All glass-card, btn-secondary, btn-danger, btn-icon, form-label, form-input, badge variants have `.dark` overrides.
   - Files updated: `Sidebar.tsx`, `Header.tsx`, `NotificationDrawer.tsx`, `Modal.tsx`, `Table.tsx`, `Select.tsx`, `Button.tsx`, `GroupFormModal.tsx`, `GroupMembersModal.tsx`, `DashboardPage.tsx`, `UsersPage.tsx`, `GroupsPage.tsx`, `MessagesPage.tsx`, `MessageHistoryPage.tsx`, `ProfilePage.tsx`.
 - **Theme Toggle UI**: Sun/Moon toggle buttons added to `ProfilePage.tsx` under "Appearance" card — calls `useUiStore().setTheme()`.
+- **Mobile Responsive Layout**: Full mobile support across all pages.
+  - `Sidebar.tsx`: fixed-position drawer on mobile (`z-50`, slides in from left via `translate-x`), static relative sidebar on desktop. Closes on route change.
+  - `Header.tsx`: hamburger `Menu` button on mobile (hidden on `md+`) toggles `mobileSidebarOpen`.
+  - `MainLayout.tsx`: backdrop overlay (`z-40`) on mobile when sidebar is open, clicks to close.
+  - `ui.store.ts`: added `mobileSidebarOpen` state with `toggleMobileSidebar` / `setMobileSidebarOpen` actions.
+  - `index.css`: added `--color-secondary-*` theme tokens (violet) so `bg-secondary/10`, `text-secondary` opacity variants work.
+  - Added `bg-card`, `bg-muted`, `bg-secondary`, `border-border`, `text-secondary` semantic CSS utilities with dark overrides.
+  - `UserImportPage.tsx`: import result stats grid `grid-cols-3` → `grid-cols-1 sm:grid-cols-3`.
+  - Default theme changed from `dark` to `light`.
 - **Dynamic Toaster**: `App.tsx` `Toaster` reads `useUiStore().theme` and switches `background`, `color`, `border` styles between light and dark.
 - **CLAUDE.md Rules**: Added `## Rules` section with migration rules and permission rules to guide AI-assisted development. Covers migration immutability, additive-first strategy, dev vs prod workflow differences, and `prisma.config.ts` env note.
 - **Database Schema Diagram**: Created `docs/DATABASE_SCHEMA.md` — full Mermaid ERD of all 17 tables with column types, relationships, table summary, and key design notes. Rule added: update this file after every migration.

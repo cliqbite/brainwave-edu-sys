@@ -16,6 +16,17 @@
   --color-brand-900: #312e81;
   --color-brand-950: #1e1b4b;
 
+  --color-secondary-50:  #f5f3ff;
+  --color-secondary-100: #ede9fe;
+  --color-secondary-200: #ddd6fe;
+  --color-secondary-300: #c4b5fd;
+  --color-secondary-400: #a78bfa;
+  --color-secondary-500: #8b5cf6;
+  --color-secondary-600: #7c3aed;
+  --color-secondary-700: #6d28d9;
+  --color-secondary-800: #5b21b6;
+  --color-secondary-900: #4c1d95;
+
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   --animate-slide-up: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -141,12 +152,18 @@
   .dark .text-muted-foreground { @apply text-slate-400; }
 
   /* ─── Semantic bg/border utilities ───────────────────── */
-  .bg-primary  { @apply bg-brand-500; }
-  .bg-muted    { @apply bg-slate-200; }
+  .bg-primary   { @apply bg-brand-500; }
+  .bg-secondary { @apply bg-secondary-500; }
+  .bg-muted     { @apply bg-slate-200; }
+  .bg-card      { @apply bg-white; }
   .border-border { @apply border-slate-200; }
 
+  .text-secondary { @apply text-secondary-600; }
+
   .dark .bg-muted      { @apply bg-slate-700; }
+  .dark .bg-card       { @apply bg-slate-800; }
   .dark .border-border { @apply border-white/10; }
+  .dark .text-secondary { @apply text-secondary-400; }
 }
 
 @keyframes slideUp {

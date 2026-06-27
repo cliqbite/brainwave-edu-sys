@@ -1,15 +1,16 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useUiStore } from '../../stores/ui.store';
 import { useAuthStore } from '../../stores/auth.store';
-import { 
-  LayoutDashboard, 
-  Users, 
+import {
+  LayoutDashboard,
+  Users,
   UserPlus,
-  UsersRound, 
-  MessageSquare, 
-  History, 
-  ShieldAlert, 
-  KeyRound, 
+  UsersRound,
+  MessageSquare,
+  History,
+  ShieldAlert,
+  KeyRound,
   Activity,
   Settings,
   ChevronLeft,
@@ -28,8 +29,14 @@ interface NavItem {
 }
 
 export const Sidebar = () => {
-  const { sidebarCollapsed, toggleSidebar } = useUiStore();
+  const { sidebarCollapsed, toggleSidebar, mobileSidebarOpen, setMobileSidebarOpen } = useUiStore();
   const { hasPermission, hasRole } = useAuthStore();
+  const location = useLocation();
+
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setMobileSidebarOpen(false);
+  }, [location.pathname, setMobileSidebarOpen]);
 
   const navItems: NavItem[] = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -45,11 +52,20 @@ export const Sidebar = () => {
   ];
 
   return (
-    <aside className={`bg-white/80 dark:bg-slate-800/40 backdrop-blur-xl border-r border-slate-200 dark:border-white/10 flex flex-col transition-all duration-300 z-40 relative ${sidebarCollapsed ? 'w-17.5' : 'w-64'}`}>
+    <aside className={`
+      fixed inset-y-0 left-0 z-50
+      md:relative md:z-40 md:translate-x-0
+      bg-white/95 dark:bg-slate-800/40 backdrop-blur-xl
+      border-r border-slate-200 dark:border-white/10
+      flex flex-col transition-all duration-300
+      w-72 md:w-auto
+      ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+      ${sidebarCollapsed ? 'md:w-17.5' : 'md:w-64'}
+    `}>
       <div className="h-16 flex items-center px-5 border-b border-slate-200 dark:border-white/10 shrink-0">
         <div className="flex items-center gap-2 text-brand-500 dark:text-brand-400 font-bold text-lg overflow-hidden whitespace-nowrap">
           <GraduationCap size={24} className="shrink-0" />
-          {!sidebarCollapsed && <span>Brainwave EduSys</span>}
+          {(!sidebarCollapsed || mobileSidebarOpen) && <span>Brainwave EduSys</span>}
         </div>
       </div>
 
@@ -63,17 +79,20 @@ export const Sidebar = () => {
               key={item.to}
               to={item.to}
               className={({ isActive }) => `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors mb-1 ${isActive ? 'bg-brand-500/15 text-brand-600 dark:text-brand-400 font-medium' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-slate-100'}`}
-              title={sidebarCollapsed ? item.label : undefined}
+              title={(sidebarCollapsed && !mobileSidebarOpen) ? item.label : undefined}
             >
               <item.icon size={20} className="shrink-0" />
-              {!sidebarCollapsed && <span className="whitespace-nowrap">{item.label}</span>}
+              {(!sidebarCollapsed || mobileSidebarOpen) && <span className="whitespace-nowrap">{item.label}</span>}
             </NavLink>
           );
         })}
       </nav>
 
-      <div className="p-4 border-t border-slate-200 dark:border-white/10 flex justify-end shrink-0">
-        <button className="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors" onClick={toggleSidebar}>
+      <div className="p-4 border-t border-slate-200 dark:border-white/10 flex justify-end shrink-0 hidden md:flex">
+        <button
+          className="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors"
+          onClick={toggleSidebar}
+        >
           {sidebarCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
         </button>
       </div>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../../stores/auth.store';
-import { Bell, Search, LogOut, User } from 'lucide-react';
+import { useUiStore } from '../../stores/ui.store';
+import { Bell, Search, LogOut, User, Menu } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { authApi, pushApi } from '../../api/endpoints';
 
@@ -10,6 +11,7 @@ import { NotificationDrawer } from './NotificationDrawer';
 
 export const Header = () => {
   const { user, logout, refreshToken } = useAuthStore();
+  const { toggleMobileSidebar } = useUiStore();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -62,8 +64,15 @@ export const Header = () => {
 
   return (
     <>
-      <header className="h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 flex items-center justify-between px-8 z-30 sticky top-0 shrink-0">
-        <div className="flex items-center gap-4 flex-1">
+      <header className="h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 flex items-center justify-between px-4 md:px-8 z-30 sticky top-0 shrink-0">
+        <div className="flex items-center gap-2 md:gap-4 flex-1">
+          <button
+            className="md:hidden btn-icon"
+            onClick={toggleMobileSidebar}
+            aria-label="Open menu"
+          >
+            <Menu size={20} />
+          </button>
           <div className="relative w-64 hidden md:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
             <input
