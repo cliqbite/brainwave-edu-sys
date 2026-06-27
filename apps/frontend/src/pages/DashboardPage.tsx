@@ -54,8 +54,8 @@ const PushNotificationBanner = () => {
           <Bell size={20} className="animate-pulse" />
         </div>
         <div>
-          <h3 className="font-semibold text-brand-100">Enable Push Notifications</h3>
-          <p className="text-sm text-brand-200/70 mt-0.5">Get instantly notified about important updates and new messages.</p>
+          <h3 className="font-semibold text-brand-800 dark:text-brand-100">Enable Push Notifications</h3>
+          <p className="text-sm text-brand-700 dark:text-brand-300 mt-0.5">Get instantly notified about important updates and new messages.</p>
         </div>
       </div>
       <button 
