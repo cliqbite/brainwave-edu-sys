@@ -10,6 +10,7 @@
 |---|---|
 | Non-technical (owner, manager, support staff) | [👤 Simple Guide (Non-Tech)](#-simple-guide-non-tech) |
 | Developer / DevOps / Technical staff | [🛠️ Technical Guide (Dev)](#️-technical-guide-dev) |
+| Deploying on Dokploy (self-hosted PaaS) | [🚢 Dokploy Guide](#-dokploy-deployment)
 
 ---
 
@@ -513,3 +514,153 @@ npm run clean          # remove all dist/ and node_modules/
 | `bash scripts/run-query.sh file.sql` | Run SQL from file |
 | `bash scripts/status.sh` | Container status + resource usage |
 | `bash scripts/logs.sh [service]` | Live log stream (all or specific) |
+
+---
+
+# 🚢 Dokploy Deployment
+
+> Dokploy is a self-hosted PaaS (like Coolify / Heroku) that manages Docker Compose apps with built-in Traefik reverse proxy + automatic HTTPS.
+> Use `docker-compose.dokploy.yml` — it replaces Caddy with Traefik labels.
+
+---
+
+## How it differs from VPS deployment
+
+| | VPS (manual) | Dokploy |
+|---|---|---|
+| Reverse proxy | Caddy (in compose) | Traefik (Dokploy manages) |
+| HTTPS | Caddy auto TLS | Traefik + Let's Encrypt |
+| Ports | 80/443 bound in compose | Dokploy's Traefik binds 80/443 |
+| Compose file | `docker-compose.prod.yml` | `docker-compose.dokploy.yml` |
+| Env vars | `.env.production` file | Dokploy UI → Environment tab |
+
+---
+
+## Step 1 — DNS
+
+Point both domains to your Dokploy server IP **before** deploying:
+
+| Record | Type | Value |
+|---|---|---|
+| `app.yourdomain.com` | A | `DOKPLOY_SERVER_IP` |
+| `api.yourdomain.com` | A | `DOKPLOY_SERVER_IP` |
+
+---
+
+## Step 2 — Create app in Dokploy
+
+1. Open Dokploy → **Projects** → **Create Project** → name it `brainwave`
+2. Inside the project → **Create Service** → **Docker Compose**
+3. Set **Repository**: your Git repo URL
+4. Set **Branch**: `main` (or `uat` for UAT)
+5. Set **Compose File Path**: `docker-compose.dokploy.yml`
+6. Click **Save**
+
+---
+
+## Step 3 — Environment variables
+
+In Dokploy → your service → **Environment** tab, paste all variables:
+
+```env
+# Database
+DB_ROOT_PASSWORD=your_strong_root_password
+DB_NAME=brainwave
+DB_USER=brainwave
+DB_PASSWORD=your_strong_db_password
+
+# Redis (leave blank = no password)
+REDIS_PASSWORD=
+
+# Domains (no https://, no trailing slash)
+FRONTEND_DOMAIN=app.yourdomain.com
+API_DOMAIN=api.yourdomain.com
+
+# JWT secrets (generate with: openssl rand -hex 64)
+JWT_ACCESS_SECRET=generate_64_char_hex
+JWT_REFRESH_SECRET=generate_64_char_hex_different
+JWT_ACCESS_EXPIRY=15m
+JWT_REFRESH_EXPIRY=7d
+
+# Master admin account (created on first seed)
+MASTER_EMAIL=admin@yourdomain.com
+MASTER_PASSWORD=your_strong_master_password
+MASTER_NAME=Admin
+
+# WhatsApp (leave blank to disable)
+WHATSAPP_API_URL=
+WHATSAPP_API_KEY=
+WHATSAPP_ENABLED=false
+
+# Web Push (leave blank to disable push notifications)
+VAPID_PUBLIC_KEY=
+VAPID_PRIVATE_KEY=
+VAPID_EMAIL=mailto:admin@yourdomain.com
+
+# App
+APP_NAME=Brainwave EduSys
+LOG_LEVEL=info
+UPLOAD_MAX_SIZE_MB=5
+```
+
+> Generate VAPID keys: `npx web-push generate-vapid-keys`
+
+---
+
+## Step 4 — Deploy
+
+1. Dokploy → your service → **Deployments** tab → **Deploy**
+2. Watch the build log — first build takes 3–5 min (installs deps, compiles TS, builds React)
+3. Once all containers show **Running**, visit `https://app.yourdomain.com`
+
+---
+
+## Step 5 — Seed the database (first time only)
+
+After first deploy, run the seed via Dokploy terminal or SSH into the server:
+
+```bash
+# Find the backend container name
+docker ps | grep brainwave-backend
+
+# Run seed
+docker exec brainwave-backend sh -c "cd /app && npx prisma db seed --schema=apps/backend/prisma/schema.prisma"
+```
+
+Or via Dokploy UI → your service → **Terminal** → select `backend` container → run the command above.
+
+---
+
+## Updating after a code push
+
+1. Dokploy → your service → **Deployments** → **Deploy**
+
+That's it. Dokploy pulls latest code, rebuilds images, and replaces containers with zero manual steps.
+
+---
+
+## UAT vs Production on same Dokploy
+
+Run two separate projects in Dokploy:
+
+| | UAT | Production |
+|---|---|---|
+| Project name | `brainwave-uat` | `brainwave-prod` |
+| Branch | `uat` | `main` |
+| `FRONTEND_DOMAIN` | `uat.yourdomain.com` | `app.yourdomain.com` |
+| `API_DOMAIN` | `uat-api.yourdomain.com` | `api.yourdomain.com` |
+| `DB_NAME` | `brainwave_uat` | `brainwave` |
+
+Each project has completely separate containers, volumes, and databases. Deploying to UAT never touches production.
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| Build fails at Prisma generate | Check `DATABASE_URL` env var is set correctly |
+| 502 Bad Gateway | Backend not healthy yet — wait 60s and retry |
+| SSL cert not issuing | DNS not propagated yet — wait, then re-deploy |
+| `dokploy-network not found` | Dokploy not fully initialized — restart Dokploy Traefik from Dokploy settings |
+| Container restarts in loop | Check logs in Dokploy → Terminal → view container logs |
